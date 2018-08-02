@@ -25,7 +25,11 @@ $router->get('/', function () use ($router) {
 //     $router->get('/{id}', ['uses' => 'NewsController@newsById']);
 // });
 $router->group(['prefix' => 'news'], function () use ($router) {
-    $router->get('/',  ['uses' => 'NewsController@allNews']);
-    $router->get('/{news_id}',  ['uses' => 'NewsController@newsById']);
+    $router->get('/limit/{kategori}',  ['uses' => 'NewsController@categoriLimit']);
+    $router->get('/categori/{kategori}',  ['uses' => 'NewsController@newsCategori']);
     $router->get('/populer',  ['uses' => 'NewsController@newPopuler']);
+    $router->get('/new',  ['uses' => 'NewsController@newNews']);
+    $router->get('/headline',  ['uses' => 'NewsController@headline']);
+    $router->get('/{news_id}',  ['uses' => 'NewsController@newsById']);
+    $router->get('/',  ['uses' => 'NewsController@allNews']);
 });
