@@ -14,3 +14,18 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+
+/**
+ * Routes for resource news
+ */
+// $router->group(['prefix' => 'news'], function () use ($router) {
+//     $router->get('/all',  ['uses' => 'NewsController@allNews']);
+
+//     $router->get('/{id}', ['uses' => 'NewsController@newsById']);
+// });
+$router->group(['prefix' => 'news'], function () use ($router) {
+    $router->get('/',  ['uses' => 'NewsController@allNews']);
+    $router->get('/{news_id}',  ['uses' => 'NewsController@newsById']);
+    $router->get('/populer',  ['uses' => 'NewsController@newPopuler']);
+});
