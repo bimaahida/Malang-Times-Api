@@ -52,7 +52,7 @@ class NewsController extends Controller {
         }
     }
     public function categoriLimit($kat){
-        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->take(3)->get();
+        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->take(2)->get();
         // var_dump($data);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
