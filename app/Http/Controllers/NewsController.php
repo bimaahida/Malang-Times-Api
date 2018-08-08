@@ -16,7 +16,7 @@ class NewsController extends Controller {
         
     }
     public function newsById($id){
-        $data = Db_news::where('news_view',$id)->first();
+        $data = Db_news::where('news_id',$id)->first();
         // var_dump($data);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
