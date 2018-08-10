@@ -26,7 +26,7 @@ $router->get('/', function () use ($router) {
 // });
 $router->group(['prefix' => 'news'], function () use ($router) {
     $router->get('/limit/{kategori}',  ['uses' => 'NewsController@categoriLimit']);
-    $router->get('/categori/{kategori}',  ['uses' => 'NewsController@newsCategori']);
+    $router->get('/categori/{kategori}/{limit}',  ['uses' => 'NewsController@newsCategori']);
     $router->get('/populer',  ['uses' => 'NewsController@newPopuler']);
     $router->get('/new',  ['uses' => 'NewsController@newNews']);
     $router->get('/headline',  ['uses' => 'NewsController@headline']);

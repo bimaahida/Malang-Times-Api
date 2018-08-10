@@ -60,8 +60,13 @@ class NewsController extends Controller {
             return response()->json($this->result(TRUE,$data));
         }
     }
-    public function newsCategori($kat){
-        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->take(20)->get();
+    public function newsCategori($kat,$limit){
+        if ($limit == 1) {
+            $limit = 0;
+        }else{
+            $limit = $limit * 20;
+        }
+        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->skip($limit)->take(20)->get();
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
         }else{
