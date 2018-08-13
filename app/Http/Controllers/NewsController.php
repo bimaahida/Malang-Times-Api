@@ -66,7 +66,7 @@ class NewsController extends Controller {
         }else{
             $limit = $limit * 20;
         }
-        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->skip($limit)->take(20)->get();
+        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->skip($limit)->take(2)->get();
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
         }else{
