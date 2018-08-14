@@ -15,9 +15,12 @@ class NewsController extends Controller {
         }
         
     }
-    public function newsById($id){
+    public function newsById($id,$limit){
         $data = Db_news::where('news_id',$id)->first();
-        // var_dump($data);
+        if ($limit >= 2 ) {
+            $data = Db_news::where('catnews_id',$data['catnews_id'])->skip($limit)->take(1)->get();
+        }
+        // var_dump($data['catnews_id']);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
         }else{
@@ -66,7 +69,7 @@ class NewsController extends Controller {
         }else{
             $limit = $limit * 20;
         }
-        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->skip($limit)->take(2)->get();
+        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->skip($limit)->take(20)->get();
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
         }else{

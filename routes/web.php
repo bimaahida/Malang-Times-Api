@@ -30,6 +30,6 @@ $router->group(['prefix' => 'news'], function () use ($router) {
     $router->get('/populer',  ['uses' => 'NewsController@newPopuler']);
     $router->get('/new',  ['uses' => 'NewsController@newNews']);
     $router->get('/headline',  ['uses' => 'NewsController@headline']);
-    $router->get('/{news_id}',  ['uses' => 'NewsController@newsById']);
+    $router->get('/{news_id}/{limit}',  ['uses' => 'NewsController@newsById']);
     $router->get('/',  ['uses' => 'NewsController@allNews']);
 });
