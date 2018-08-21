@@ -11,7 +11,8 @@
 |
 */
 
-$router->get('/', function () use ($router) {
+
+$router->get('/', function() use ($router) {
     return $router->app->version();
 });
 
@@ -19,17 +20,29 @@ $router->get('/', function () use ($router) {
 /**
  * Routes for resource news
  */
-// $router->group(['prefix' => 'news'], function () use ($router) {
-//     $router->get('/all',  ['uses' => 'NewsController@allNews']);
 
-//     $router->get('/{id}', ['uses' => 'NewsController@newsById']);
-// });
+ 
+function rest($path, $controller,$router)
+{
+	$router->get($path, $controller.'@index');
+	$router->get($path.'/{id}', $controller.'@show');
+	$router->post($path, $controller.'@store');
+	$router->put($path.'/{id}', $controller.'@update');
+	$router->delete($path.'/{id}', $controller.'@destroy');
+}
+
+
+
 $router->group(['prefix' => 'news'], function () use ($router) {
+    $router->get('/{news_id}/{limit}',  ['uses' => 'NewsController@newsById']);
     $router->get('/limit/{kategori}',  ['uses' => 'NewsController@categoriLimit']);
     $router->get('/categori/{kategori}/{limit}',  ['uses' => 'NewsController@newsCategori']);
     $router->get('/populer',  ['uses' => 'NewsController@newPopuler']);
     $router->get('/new',  ['uses' => 'NewsController@newNews']);
     $router->get('/headline',  ['uses' => 'NewsController@headline']);
-    $router->get('/{news_id}/{limit}',  ['uses' => 'NewsController@newsById']);
-    $router->get('/',  ['uses' => 'NewsController@allNews']);
+    rest('/', 'NewsController',$router);
+});
+$router->group(['prefix' => 'user'], function () use ($router) {
+    $router->post('/login', 'UserController@Login');
+    rest('/', 'UserController',$router);
 });

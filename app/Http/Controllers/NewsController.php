@@ -1,26 +1,24 @@
 <?php 
 namespace App\Http\Controllers;
 
-use App\Db_news;
+use App\Model\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller {
+    use RestControllerTrait;
+    const MODEL = "App\Model\User";
 
-    public function allNews(){
-        $data = Db_news::orderBy('created', 'desc')->take(20)->get();
-        if (empty($data)) {
-            return response()->json($this->result(FALSE,[]));    
-        }else{
-            return response()->json($this->result(TRUE,$data));
-        }
-        
-    }
+    protected $validationRules  = [
+        'username' => 'required',
+        'password' => 'required',
+        'name' => 'required',
+    ];
+
     public function newsById($id,$limit){
-        $data = Db_news::where('news_id',$id)->first();
+        $data = News::where('news_id',$id)->first();
         if ($limit >= 2 ) {
-            $data = Db_news::where('catnews_id',$data['catnews_id'])->skip($limit)->take(1)->get();
+            $data = News::where('catnews_id',$data['catnews_id'])->skip($limit)->take(1)->get();
         }
-        // var_dump($data['catnews_id']);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
         }else{
@@ -28,7 +26,7 @@ class NewsController extends Controller {
         }
     }
     public function newPopuler(){
-        $data = Db_news::limit(3)->orderBy('news_view', 'desc')->get();
+        $data = News::limit(3)->orderBy('news_view', 'desc')->get();
         // var_dump($data);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
@@ -37,7 +35,7 @@ class NewsController extends Controller {
         }
     }
     public function newNews(){
-        $data = Db_news::limit(3)->orderBy('created', 'desc')->get();
+        $data = News::limit(3)->orderBy('created_at', 'desc')->get();
         // var_dump($data);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
@@ -46,7 +44,7 @@ class NewsController extends Controller {
         }
     }
     public function headline(){
-        $data = Db_news::where('news_headline','1')->orderBy('created', 'desc')->take(5)->get();
+        $data = News::where('news_headline','1')->orderBy('created_at', 'desc')->take(5)->get();
         // var_dump($data);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
@@ -55,7 +53,7 @@ class NewsController extends Controller {
         }
     }
     public function categoriLimit($kat){
-        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->take(2)->get();
+        $data = News::where('catnews_id',$kat)->orderBy('created_at', 'desc')->take(2)->get();
         // var_dump($data);
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
@@ -69,7 +67,7 @@ class NewsController extends Controller {
         }else{
             $limit = $limit * 20;
         }
-        $data = Db_news::where('catnews_id',$kat)->orderBy('created', 'desc')->skip($limit)->take(20)->get();
+        $data = News::where('catnews_id',$kat)->orderBy('created_at', 'desc')->skip($limit)->take(20)->get();
         if (empty($data)) {
             return response()->json($this->result(FALSE,[]));    
         }else{
