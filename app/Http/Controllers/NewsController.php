@@ -3,16 +3,59 @@ namespace App\Http\Controllers;
 
 use App\Model\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller {
     use RestControllerTrait;
     const MODEL = "App\Model\User";
 
     protected $validationRules  = [
-        'username' => 'required',
-        'password' => 'required',
-        'name' => 'required',
+        'catnews_id' => 'required',
+        'editor_id' => 'required',
+        'news_datepub' => 'required',
+        'news_headline' => 'required',
+        'news_title' => 'required',
+        'news_image' => 'required',
+        'news_caption' => 'required',
+        'news_description' => 'required',
+        'news_content' => 'required',
+        'news_writer' => 'required',
     ];
+
+    public function create(Request $request){
+        $news =  new News();
+        $v = \Validator::make($request->all(), $this->validationRules);
+        try
+        {
+            
+            if($v->fails())
+            {
+                throw new \Exception("ValidationException");
+            }
+
+            $image_base64 = explode(',',$request->news_image);
+            $image_type = explode('/',explode(';',$image_base64[0])[0])[1];
+            $image_name = 'Images/'.str_random(10).'.'.$image_type;
+            if (Storage::put('public/'.$image_name, base64_decode($image_base64[1]))) {
+                $news->catnews_id = $request->catnews_id;
+                $news->editor_id = $request->editor_id;
+                $news->news_datepub = $request->news_datepub;
+                $news->news_headline = $request->news_headline;
+                $news->news_title = $request->news_title;
+                $news->news_image = $image_name;
+                $news->news_caption = $request->news_caption;
+                $news->news_description = $request->news_description;
+                $news->news_content = $request->news_content;
+                $news->news_writer = $request->news_writer;
+                $news->save();
+                return $this->createdResponse($news);
+            }
+        }catch(\Exception $ex)
+        {
+            $data = ['form_validations' => $v->errors(), 'exception' => $ex->getMessage()];
+            return $this->clientErrorResponse($data);
+        }
+    }
 
     public function newsById($id,$limit){
         $data = News::where('news_id',$id)->first();
@@ -79,5 +122,4 @@ class NewsController extends Controller {
         $res['result'] = $data;
         return $res;
     }
-
 }

@@ -25,7 +25,7 @@ class News extends Model {
         return $this->hasOne('App\Model\User');
     }
     public function categori(){
-        return $this->hasOne('App\Model\Categori');
+        return $this->hasOne('App\Model\Category');
     }
 
 }

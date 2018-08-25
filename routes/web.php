@@ -11,7 +11,6 @@
 |
 */
 
-
 $router->get('/', function() use ($router) {
     return $router->app->version();
 });
@@ -20,19 +19,6 @@ $router->get('/', function() use ($router) {
 /**
  * Routes for resource news
  */
-
- 
-function rest($path, $controller,$router)
-{
-	$router->get($path, $controller.'@index');
-	$router->get($path.'/{id}', $controller.'@show');
-	$router->post($path, $controller.'@store');
-	$router->put($path.'/{id}', $controller.'@update');
-	$router->delete($path.'/{id}', $controller.'@destroy');
-}
-
-
-
 $router->group(['prefix' => 'news'], function () use ($router) {
     $router->get('/{news_id}/{limit}',  ['uses' => 'NewsController@newsById']);
     $router->get('/limit/{kategori}',  ['uses' => 'NewsController@categoriLimit']);
@@ -40,9 +26,24 @@ $router->group(['prefix' => 'news'], function () use ($router) {
     $router->get('/populer',  ['uses' => 'NewsController@newPopuler']);
     $router->get('/new',  ['uses' => 'NewsController@newNews']);
     $router->get('/headline',  ['uses' => 'NewsController@headline']);
-    rest('/', 'NewsController',$router);
+    $router->delete('/{id}',  ['uses' => 'NewsController@destroy']);
+    $router->put('/{id}',  ['uses' => 'NewsController@update']);
+    $router->get('/{id}',  ['uses' => 'NewsController@show']);
+    $router->post('/',  ['uses' => 'NewsController@create']);
+    $router->get('/',  ['uses' => 'NewsController@index']);
 });
 $router->group(['prefix' => 'user'], function () use ($router) {
-    $router->post('/login', 'UserController@Login');
-    rest('/', 'UserController',$router);
+    $router->post('/login', 'UserController@login');
+    $router->delete('/{id}',  ['uses' => 'UserController@destroy']);
+    $router->put('/{id}',  ['uses' => 'UserController@update']);
+    $router->get('/{id}',  ['uses' => 'UserController@show']);
+    $router->post('/',  ['uses' => 'UserController@register']);
+    $router->get('/',  ['uses' => 'UserController@index']);
+});
+$router->group(['prefix' => 'categori'], function () use ($router) {
+    $router->delete('/{id}',  ['uses' => 'CategorisController@destroy']);
+    $router->put('/{id}',  ['uses' => 'CategorisController@update']);
+    $router->get('/{id}',  ['uses' => 'CategorisController@show']);
+    $router->post('/',  ['uses' => 'CategorisController@store']);
+    $router->get('/',  ['uses' => 'CategorisController@index']);
 });
