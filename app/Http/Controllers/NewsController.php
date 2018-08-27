@@ -56,7 +56,6 @@ class NewsController extends Controller {
             return $this->clientErrorResponse($data);
         }
     }
-
     public function newsById($id,$limit){
         $data = News::where('news_id',$id)->first();
         if ($limit >= 2 ) {
