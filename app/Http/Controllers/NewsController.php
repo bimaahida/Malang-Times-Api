@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller {
     use RestControllerTrait;
-    const MODEL = "App\Model\User";
+    const MODEL = "App\Model\News";
 
     protected $validationRules  = [
         'catnews_id' => 'required',
