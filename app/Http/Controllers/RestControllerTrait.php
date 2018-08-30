@@ -6,7 +6,7 @@ trait RestControllerTrait {
 	public function index()
     {
         $m = self::MODEL;
-        return $this->listResponse($m::paginate(10));
+        return $this->listResponse($m::orderBy('id', 'desc')->paginate(10));
     }
     public function show($id)
     {
